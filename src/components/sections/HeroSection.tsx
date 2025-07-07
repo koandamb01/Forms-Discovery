@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Star, Users, FileText } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { SearchBar } from '../ui/SearchBar';
+import { useNavigate } from 'react-router-dom';
 
 interface HeroSectionProps {
   onSearch: (query: string) => void;
@@ -10,6 +11,7 @@ interface HeroSectionProps {
 
 export function HeroSection({ onSearch }: HeroSectionProps) {
   const [isAIAssistantOpen, setIsAIAssistantOpen] = useState(false);
+  const navigate = useNavigate();
 
   const stats = [
     { label: 'Forms Available', value: '10,000+', icon: FileText },
