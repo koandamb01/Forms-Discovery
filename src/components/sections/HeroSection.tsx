@@ -96,7 +96,7 @@ export function HeroSection({ onSearch }: HeroSectionProps) {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
           >
-            <Button variant="primary" size="lg" className="text-lg px-8 py-4">
+            <Button variant="primary" size="lg" className="text-lg px-8 py-4" onClick={navigate('/categories')}>
               Browse Categories
               <ArrowRight size={20} className="ml-2" />
             </Button>
