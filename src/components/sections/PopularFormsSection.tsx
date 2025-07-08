@@ -80,7 +80,7 @@ export function PopularFormsSection({ onFormClick }: PopularFormsSectionProps) {
           viewport={{ once: true }}
           className="text-center"
         >
-          <Button variant="primary" size="lg">
+          <Button variant="primary" size="lg" onClick={() => navigate('/search')}>
             View All Popular Forms
             <ArrowRight size={20} className="ml-2" />
           </Button>

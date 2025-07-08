@@ -4,6 +4,7 @@ import { ArrowRight } from 'lucide-react';
 import { CategoryCard } from '../ui/CategoryCard';
 import { Button } from '../ui/Button';
 import { mockCategories } from '../../data/mockData';
+import { useNavigate } from 'react-router-dom';
 
 interface CategoriesSectionProps {
   onCategoryClick: (categoryId: string) => void;
@@ -11,6 +12,7 @@ interface CategoriesSectionProps {
 
 export function CategoriesSection({ onCategoryClick }: CategoriesSectionProps) {
   const featuredCategories = mockCategories.filter(cat => cat.isFeatured).slice(0, 6);
+  const navigate = useNavigate();
 
   return (
     <section className="py-20 bg-white">
@@ -70,7 +72,7 @@ export function CategoriesSection({ onCategoryClick }: CategoriesSectionProps) {
           viewport={{ once: true }}
           className="text-center"
         >
-          <Button variant="outline" size="lg">
+          <Button variant="outline" size="lg" onClick={() => navigate('/categories')}>
             View All Categories
             <ArrowRight size={20} className="ml-2" />
           </Button>

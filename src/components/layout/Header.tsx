@@ -4,7 +4,6 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Search, User, BookOpen, Home, Filter, Info, Mail, Crown, Settings } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { SearchBar } from '../ui/SearchBar';
-import { UserProfile } from '../features/UserProfile';
 import { AdvancedSearch } from '../features/AdvancedSearch';
 import { NewsletterSignup } from '../features/NewsletterSignup';
 import { AdminPanel } from '../features/AdminPanel';
@@ -14,7 +13,6 @@ import { Modal } from '../ui/Modal';
 export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isAdvancedSearchOpen, setIsAdvancedSearchOpen] = useState(false);
   const [isNewsletterOpen, setIsNewsletterOpen] = useState(false);
   const [isAdminPanelOpen, setIsAdminPanelOpen] = useState(false);
@@ -124,7 +122,7 @@ export function Header() {
             <Button 
               variant="outline" 
               size="sm"
-              onClick={() => setIsProfileOpen(true)}
+              onClick={() => navigate('/profile')}
             >
               <User size={16} className="mr-2" />
               Profile
@@ -214,10 +212,7 @@ export function Header() {
                   <Button 
                     variant="outline" 
                     className="flex-1"
-                    onClick={() => {
-                      setIsProfileOpen(true);
-                      setIsMobileMenuOpen(false);
-                    }}
+                    onClick={() => navigate('/profile')}
                   >
                     Profile
                   </Button>
@@ -239,7 +234,6 @@ export function Header() {
       </AnimatePresence>
 
       {/* Modals */}
-      <UserProfile isOpen={isProfileOpen} onClose={() => setIsProfileOpen(false)} />
       <AdvancedSearch 
         isOpen={isAdvancedSearchOpen} 
         onClose={() => setIsAdvancedSearchOpen(false)}

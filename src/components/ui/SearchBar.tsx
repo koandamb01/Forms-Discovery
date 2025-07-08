@@ -93,16 +93,18 @@ export function SearchBar({
 
       {/* Ask AI Button */}
       {onAskAI && (
-        <motion.button
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.1 }}
-          onClick={handleAskAI}
-          className="mt-3 mx-auto flex items-center px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg transition-colors duration-200 text-sm font-medium"
-        >
-          <MessageCircle className="w-4 h-4 mr-2" />
-          Can't find it? Ask our AI
-        </motion.button>
+        <div className="mt-3 text-center">
+          <motion.button
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.1 }}
+            onClick={handleAskAI}
+            className="inline-flex items-center px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg transition-colors duration-200 text-sm font-medium"
+          >
+            <MessageCircle className="w-4 h-4 mr-2" />
+            Can't find it? Ask our AI
+          </motion.button>
+        </div>
       )}
 
       <AnimatePresence>
