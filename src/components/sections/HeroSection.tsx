@@ -12,6 +12,7 @@ interface HeroSectionProps {
 export function HeroSection({ onSearch }: HeroSectionProps) {
   const [isAIAssistantOpen, setIsAIAssistantOpen] = useState(false);
   const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const stats = [
     { label: 'Forms Available', value: '10,000+', icon: FileText },
@@ -100,7 +101,7 @@ export function HeroSection({ onSearch }: HeroSectionProps) {
               Browse Categories
               <ArrowRight size={20} className="ml-2" />
             </Button>
-            <Button variant="outline" size="lg" className="text-lg px-8 py-4">
+            <Button variant="outline" size="lg" className="text-lg px-8 py-4" onClick={() => navigate('/search')}>
               Popular Forms
             </Button>
           </motion.div>

@@ -6,7 +6,6 @@ import { Button } from '../ui/Button';
 import { SearchBar } from '../ui/SearchBar';
 import { AdvancedSearch } from '../features/AdvancedSearch';
 import { NewsletterSignup } from '../features/NewsletterSignup';
-import { AdminPanel } from '../features/AdminPanel';
 import { GetStartedModal } from '../features/GetStartedModal';
 import { Modal } from '../ui/Modal';
 
@@ -15,7 +14,6 @@ export function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isAdvancedSearchOpen, setIsAdvancedSearchOpen] = useState(false);
   const [isNewsletterOpen, setIsNewsletterOpen] = useState(false);
-  const [isAdminPanelOpen, setIsAdminPanelOpen] = useState(false);
   const [isGetStartedOpen, setIsGetStartedOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
@@ -132,7 +130,7 @@ export function Header() {
             <Button 
               variant="ghost" 
               size="sm"
-              onClick={() => setIsAdminPanelOpen(true)}
+              onClick={() => navigate('/admin')}
               title="Admin Panel"
             >
               <Settings size={16} />
@@ -250,10 +248,6 @@ export function Header() {
           onSuccess={() => setIsNewsletterOpen(false)} 
         />
       </Modal>
-      <AdminPanel 
-        isOpen={isAdminPanelOpen} 
-        onClose={() => setIsAdminPanelOpen(false)} 
-      />
       <GetStartedModal 
         isOpen={isGetStartedOpen} 
         onClose={() => setIsGetStartedOpen(false)} 
