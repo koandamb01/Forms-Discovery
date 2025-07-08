@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { TrendingUp, ArrowRight } from 'lucide-react';
 import { FormCard } from '../ui/FormCard';
 import { Button } from '../ui/Button';
@@ -10,6 +11,7 @@ interface PopularFormsSectionProps {
 }
 
 export function PopularFormsSection({ onFormClick }: PopularFormsSectionProps) {
+  const navigate = useNavigate();
   const popularForms = getPopularForms(6);
 
   return (
