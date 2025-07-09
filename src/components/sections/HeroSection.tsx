@@ -12,7 +12,6 @@ interface HeroSectionProps {
 export function HeroSection({ onSearch }: HeroSectionProps) {
   const [isAIAssistantOpen, setIsAIAssistantOpen] = useState(false);
   const navigate = useNavigate();
-  const navigate = useNavigate();
 
   const stats = [
     { label: 'Forms Available', value: '10,000+', icon: FileText },
