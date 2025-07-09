@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, Search, User, BookOpen, Home, Filter, Info, Mail, Crown, Settings } from 'lucide-react';
+import { Menu, X, Search, User, BookOpen, Home, Filter, Info, Mail, Crown, Settings, LogOut } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { SearchBar } from '../ui/SearchBar';
 import { AdvancedSearch } from '../features/AdvancedSearch';
 import { NewsletterSignup } from '../features/NewsletterSignup';
 import { GetStartedModal } from '../features/GetStartedModal';
+import { LoginModal } from '../auth/LoginModal';
+import { SignupModal } from '../auth/SignupModal';
+import { ResetPasswordModal } from '../auth/ResetPasswordModal';
 import { Modal } from '../ui/Modal';
+import { useAuth } from '../../contexts/AuthContext';
 
 export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -15,8 +19,10 @@ export function Header() {
   const [isAdvancedSearchOpen, setIsAdvancedSearchOpen] = useState(false);
   const [isNewsletterOpen, setIsNewsletterOpen] = useState(false);
   const [isGetStartedOpen, setIsGetStartedOpen] = useState(false);
+  const [activeAuthModal, setActiveAuthModal] = useState<'login' | 'signup' | 'reset' | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
+  const { isAuthenticated, userProfile, logout } = useAuth();
 
   const navigation = [
     { name: 'Home', href: '/', icon: Home },
@@ -44,6 +50,14 @@ export function Header() {
     if (filters.sortBy) params.set('sort', filters.sortBy);
     
     window.location.href = `/search?${params.toString()}`;
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await logout();
+    } catch (error) {
+      console.error('Sign out error:', error);
+    }
   };
 
   const isActiveRoute = (href: string) => {
@@ -87,13 +101,13 @@ export function Header() {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-4">
-            <button
-              onClick={() => setIsSearchOpen(!isSearchOpen)}
-              className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-all duration-200"
-              title="Search"
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => navigate('/search')}
             >
-              <Search size={20} />
-            </button>
+              Browse Forms
+            </Button>
             
             <button
               onClick={() => setIsAdvancedSearchOpen(true)}
@@ -111,38 +125,93 @@ export function Header() {
               Newsletter
             </Button>
 
-            <Link to="/premium">
-              <Button variant="outline" size="sm">
-                <Crown size={16} className="mr-2" />
-                Premium
-              </Button>
-            </Link>
-            
-            <Button 
-              variant="outline" 
-              size="sm"
-              onClick={() => navigate('/profile')}
-            >
-              <User size={16} className="mr-2" />
-              Profile
-            </Button>
+            {!isAuthenticated && (
+              <Link to="/premium">
+                <Button variant="outline" size="sm">
+                  <Crown size={16} className="mr-2" />
+                  Premium
+                </Button>
+              </Link>
+            )}
 
-            <Button 
-              variant="ghost" 
-              size="sm"
-              onClick={() => navigate('/admin')}
-              title="Admin Panel"
-            >
-              <Settings size={16} />
-            </Button>
-            
-            <Button 
-              variant="primary" 
-              size="sm"
-              onClick={() => setIsGetStartedOpen(true)}
-            >
-              Get Started
-            </Button>
+            {isAuthenticated ? (
+              <div className="flex items-center space-x-4">
+                {!userProfile?.subscriptionType || userProfile.subscriptionType === 'free' ? (
+                  <Link to="/premium">
+                    <Button variant="outline" size="sm">
+                      <Crown size={16} className="mr-2" />
+                      Upgrade
+                    </Button>
+                  </Link>
+                ) : null}
+                
+                <div className="relative group">
+                  <button className="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                    <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
+                      <User size={16} className="text-primary-600" />
+                    </div>
+                    <span className="text-sm font-medium text-gray-700">
+                      {userProfile?.name || 'User'}
+                    </span>
+                  </button>
+                  
+                  {/* Dropdown Menu */}
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                    <div className="py-2">
+                      <button
+                        onClick={() => navigate('/profile')}
+                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                      >
+                        <User size={16} className="mr-3" />
+                        Profile
+                      </button>
+                      <button
+                        onClick={() => navigate('/admin')}
+                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                      >
+                        <Settings size={16} className="mr-3" />
+                        Admin
+                      </button>
+                      <hr className="my-1" />
+                      <button
+                        onClick={handleSignOut}
+                        className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center"
+                      >
+                        <LogOut size={16} className="mr-3" />
+                        Sign Out
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="flex items-center space-x-3">
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => setActiveAuthModal('login')}
+                >
+                  Sign In
+                </Button>
+                <Button 
+                  variant="primary" 
+                  size="sm"
+                  onClick={() => setActiveAuthModal('signup')}
+                >
+                  Sign Up
+                </Button>
+              </div>
+            )}
+
+            {!isAuthenticated && (
+              <Button 
+                variant="primary" 
+                size="sm"
+                onClick={() => setIsGetStartedOpen(true)}
+              >
+                Get Started
+              </Button>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -201,31 +270,76 @@ export function Header() {
               })}
               <div className="pt-4 mt-4 border-t border-gray-100 space-y-2">
                 <SearchBar onSearch={handleSearch} placeholder="Search forms..." />
-                <div className="flex space-x-2 pt-2">
-                  <Link to="/premium" className="flex-1">
-                    <Button variant="outline" className="w-full">
-                      <Crown size={16} className="mr-2" />
-                      Premium
+                
+                <Button 
+                  variant="outline" 
+                  className="w-full"
+                  onClick={() => {
+                    navigate('/search');
+                    setIsMobileMenuOpen(false);
+                  }}
+                >
+                  Browse Forms
+                </Button>
+                
+                {isAuthenticated ? (
+                  <div className="flex space-x-2 pt-2">
+                    {(!userProfile?.subscriptionType || userProfile.subscriptionType === 'free') && (
+                      <Link to="/premium" className="flex-1">
+                        <Button variant="outline" className="w-full">
+                          <Crown size={16} className="mr-2" />
+                          Upgrade
+                        </Button>
+                      </Link>
+                    )}
+                    <Button 
+                      variant="outline" 
+                      className="flex-1"
+                      onClick={() => {
+                        navigate('/profile');
+                        setIsMobileMenuOpen(false);
+                      }}
+                    >
+                      Profile
                     </Button>
-                  </Link>
-                  <Button 
-                    variant="outline" 
-                    className="flex-1"
-                    onClick={() => navigate('/profile')}
-                  >
-                    Profile
-                  </Button>
-                  <Button 
-                    variant="primary" 
-                    className="flex-1"
-                    onClick={() => {
-                      setIsGetStartedOpen(true);
-                      setIsMobileMenuOpen(false);
-                    }}
-                  >
-                    Get Started
-                  </Button>
-                </div>
+                    <Button 
+                      variant="outline" 
+                      className="flex-1"
+                      onClick={handleSignOut}
+                    >
+                      Sign Out
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="flex space-x-2 pt-2">
+                    <Link to="/premium" className="flex-1">
+                      <Button variant="outline" className="w-full">
+                        <Crown size={16} className="mr-2" />
+                        Premium
+                      </Button>
+                    </Link>
+                    <Button 
+                      variant="outline" 
+                      className="flex-1"
+                      onClick={() => {
+                        setActiveAuthModal('login');
+                        setIsMobileMenuOpen(false);
+                      }}
+                    >
+                      Sign In
+                    </Button>
+                    <Button 
+                      variant="primary" 
+                      className="flex-1"
+                      onClick={() => {
+                        setActiveAuthModal('signup');
+                        setIsMobileMenuOpen(false);
+                      }}
+                    >
+                      Sign Up
+                    </Button>
+                  </div>
+                )}
               </div>
             </div>
           </motion.div>
@@ -251,6 +365,26 @@ export function Header() {
       <GetStartedModal 
         isOpen={isGetStartedOpen} 
         onClose={() => setIsGetStartedOpen(false)} 
+      />
+      
+      {/* Auth Modals */}
+      <LoginModal
+        isOpen={activeAuthModal === 'login'}
+        onClose={() => setActiveAuthModal(null)}
+        onSwitchToSignup={() => setActiveAuthModal('signup')}
+        onSwitchToReset={() => setActiveAuthModal('reset')}
+      />
+      
+      <SignupModal
+        isOpen={activeAuthModal === 'signup'}
+        onClose={() => setActiveAuthModal(null)}
+        onSwitchToLogin={() => setActiveAuthModal('login')}
+      />
+      
+      <ResetPasswordModal
+        isOpen={activeAuthModal === 'reset'}
+        onClose={() => setActiveAuthModal(null)}
+        onBackToLogin={() => setActiveAuthModal('login')}
       />
     </header>
   );
