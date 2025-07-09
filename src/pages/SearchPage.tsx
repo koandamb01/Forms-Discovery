@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Filter, SlidersHorizontal } from 'lucide-react';
+import { Filter, SlidersHorizontal, Search } from 'lucide-react';
 import { SearchBar } from '../components/ui/SearchBar';
 import { FormCard } from '../components/ui/FormCard';
 import { Button } from '../components/ui/Button';
@@ -11,6 +11,7 @@ import { mockCategories } from '../data/mockData';
 
 export function SearchPage() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [searchResult, setSearchResult] = useState<SearchResult | null>(null);
   const [filters, setFilters] = useState<SearchFilters>({
     categories: [],
@@ -27,11 +28,19 @@ export function SearchPage() {
     if (query) {
       const result = searchForms(query, filters, currentPage);
       setSearchResult(result);
+    } else {
+      // Show popular forms when no query
+      const result = searchForms('', { sortBy: 'popularity' }, currentPage);
+      setSearchResult(result);
     }
   }, [query, filters, currentPage]);
 
   const handleSearch = (newQuery: string) => {
-    setSearchParams({ q: newQuery });
+    if (newQuery.trim()) {
+      setSearchParams({ q: newQuery });
+    } else {
+      setSearchParams({});
+    }
     setCurrentPage(1);
   };
 
@@ -41,25 +50,48 @@ export function SearchPage() {
   };
 
   const handleFormClick = (formId: string) => {
-    console.log('Navigate to form:', formId);
+    navigate(`/forms/${formId}`);
   };
 
-  if (!query) {
-    return (
-      <div className="min-h-screen bg-gray-50 py-8">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-3xl font-bold text-gray-900 mb-8">Search Forms</h1>
-          <SearchBar onSearch={handleSearch} placeholder="Enter your search query..." />
-        </div>
-      </div>
-    );
-  }
+  const clearFilters = () => {
+    setFilters({
+      categories: [],
+      sources: [],
+      dateRange: '',
+      sortBy: 'relevance'
+    });
+  };
+
+  const hasActiveFilters = filters.categories.length > 0 || 
+                          filters.sources.length > 0 || 
+                          filters.dateRange !== '';
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Search Header */}
         <div className="mb-8">
+          <div className="text-center mb-8">
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="text-3xl md:text-4xl font-bold text-gray-900 mb-4"
+            >
+              {query ? `Search Results` : 'Popular Forms'}
+            </motion.h1>
+            {query && (
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                className="text-xl text-gray-600"
+              >
+                Results for "{query}"
+              </motion.p>
+            )}
+          </div>
+          
           <SearchBar 
             onSearch={handleSearch} 
             placeholder="Search forms..."
@@ -85,6 +117,17 @@ export function SearchPage() {
               </div>
 
               <div className={`space-y-6 ${showFilters ? 'block' : 'hidden lg:block'}`}>
+                {/* Clear Filters */}
+                {hasActiveFilters && (
+                  <Button
+                    variant="outline"
+                    onClick={clearFilters}
+                    className="w-full"
+                  >
+                    Clear All Filters
+                  </Button>
+                )}
+
                 {/* Sort By */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -93,7 +136,7 @@ export function SearchPage() {
                   <select
                     value={filters.sortBy}
                     onChange={(e) => handleFilterChange({ sortBy: e.target.value as any })}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   >
                     <option value="relevance">Relevance</option>
                     <option value="popularity">Popularity</option>
@@ -119,7 +162,7 @@ export function SearchPage() {
                               : filters.categories.filter(id => id !== category.id);
                             handleFilterChange({ categories: newCategories });
                           }}
-                          className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                          className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                         />
                         <span className="ml-2 text-sm text-gray-700">{category.name}</span>
                       </label>
@@ -144,12 +187,29 @@ export function SearchPage() {
                               : filters.sources.filter(s => s !== source);
                             handleFilterChange({ sources: newSources });
                           }}
-                          className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                          className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                         />
                         <span className="ml-2 text-sm text-gray-700 capitalize">{source}</span>
                       </label>
                     ))}
                   </div>
+                </div>
+
+                {/* Date Range */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Date Range
+                  </label>
+                  <select
+                    value={filters.dateRange}
+                    onChange={(e) => handleFilterChange({ dateRange: e.target.value })}
+                    className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  >
+                    <option value="">Any time</option>
+                    <option value="week">Past week</option>
+                    <option value="month">Past month</option>
+                    <option value="year">Past year</option>
+                  </select>
                 </div>
               </div>
             </div>
@@ -162,11 +222,8 @@ export function SearchPage() {
                 {/* Results Header */}
                 <div className="flex items-center justify-between mb-6">
                   <div>
-                    <h2 className="text-2xl font-bold text-gray-900">
-                      Search Results
-                    </h2>
                     <p className="text-gray-600">
-                      {searchResult.totalCount} results for "{query}"
+                      {searchResult.totalCount} {searchResult.totalCount === 1 ? 'form' : 'forms'} found
                     </p>
                   </div>
                 </div>
@@ -196,7 +253,7 @@ export function SearchPage() {
                 ) : (
                   <div className="text-center py-12">
                     <div className="text-gray-400 mb-4">
-                      <Filter className="w-16 h-16 mx-auto" />
+                      <Search className="w-16 h-16 mx-auto" />
                     </div>
                     <h3 className="text-xl font-semibold text-gray-900 mb-2">
                       No forms found
@@ -206,14 +263,7 @@ export function SearchPage() {
                     </p>
                     <Button
                       variant="outline"
-                      onClick={() => {
-                        setFilters({
-                          categories: [],
-                          sources: [],
-                          dateRange: '',
-                          sortBy: 'relevance'
-                        });
-                      }}
+                      onClick={clearFilters}
                     >
                       Clear Filters
                     </Button>
