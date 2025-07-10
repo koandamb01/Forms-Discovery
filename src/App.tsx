@@ -17,6 +17,7 @@ import { ProfilePage } from './pages/ProfilePage';
 import { AIAssistant } from './components/features/AIAssistant';
 import { ToastContainer } from './components/ui/Toast';
 import { useToast } from './hooks/useToast';
+import { AuthProvider } from './contexts/AuthContext';
 
 function App() {
   const { toasts, removeToast } = useToast();
@@ -27,32 +28,34 @@ function App() {
   };
 
   return (
-    <Router>
-      <div className="min-h-screen bg-gray-50 flex flex-col">
-        <Header />
-        <main className="flex-1">
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/categories" element={<CategoriesPage />} />
-            <Route path="/categories/:categoryId" element={<CategoryDetailPage />} />
-            <Route path="/search" element={<SearchPage />} />
-            <Route path="/forms/:formId" element={<FormDetailPage />} />
-            <Route path="/blog" element={<BlogPage />} />
-            <Route path="/blog/:slug" element={<BlogDetailPage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/premium" element={<PremiumPage />} />
-            <Route path="/admin" element={<AdminPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-          </Routes>
-        </main>
-        <Footer />
-        
-        {/* Global Components */}
-        <AIAssistant onFormRecommendation={handleFormRecommendation} />
-        <ToastContainer toasts={toasts} onClose={removeToast} />
-      </div>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <div className="min-h-screen bg-gray-50 flex flex-col">
+          <Header />
+          <main className="flex-1">
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/categories" element={<CategoriesPage />} />
+              <Route path="/categories/:categoryId" element={<CategoryDetailPage />} />
+              <Route path="/search" element={<SearchPage />} />
+              <Route path="/forms/:formId" element={<FormDetailPage />} />
+              <Route path="/blog" element={<BlogPage />} />
+              <Route path="/blog/:slug" element={<BlogDetailPage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/premium" element={<PremiumPage />} />
+              <Route path="/admin" element={<AdminPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
+            </Routes>
+          </main>
+          <Footer />
+          
+          {/* Global Components */}
+          <AIAssistant onFormRecommendation={handleFormRecommendation} />
+          <ToastContainer toasts={toasts} onClose={removeToast} />
+        </div>
+      </Router>
+    </AuthProvider>
   );
 }
 
