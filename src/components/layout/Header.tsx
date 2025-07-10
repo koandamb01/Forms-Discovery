@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, Search, User, BookOpen, Home, Filter, Info, Mail, Crown, Settings, LogOut } from 'lucide-react';
+import { Menu, X, Search, User, BookOpen, Home, Filter, Info, Mail, Crown, Settings, LogOut, FileText } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { SearchBar } from '../ui/SearchBar';
 import { AdvancedSearch } from '../features/AdvancedSearch';
@@ -101,13 +101,13 @@ export function Header() {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-4">
-            <Button 
-              variant="outline" 
-              size="sm"
-              onClick={() => navigate('/search')}
+            <Link
+              to="/search"
+              className="flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-gray-700 hover:text-primary-600 hover:bg-gray-50"
             >
-              Browse Forms
-            </Button>
+              <FileText size={18} />
+              <span className="font-medium">Forms</span>
+            </Link>
             
             <button
               onClick={() => setIsAdvancedSearchOpen(true)}
@@ -271,16 +271,14 @@ export function Header() {
               <div className="pt-4 mt-4 border-t border-gray-100 space-y-2">
                 <SearchBar onSearch={handleSearch} placeholder="Search forms..." />
                 
-                <Button 
-                  variant="outline" 
-                  className="w-full"
-                  onClick={() => {
-                    navigate('/search');
-                    setIsMobileMenuOpen(false);
-                  }}
+                <Link
+                  to="/search"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex items-center space-x-3 px-3 py-3 rounded-lg transition-all duration-200 text-gray-700 hover:text-primary-600 hover:bg-gray-50"
                 >
-                  Browse Forms
-                </Button>
+                  <FileText size={20} />
+                  <span className="font-medium">Forms</span>
+                </Link>
                 
                 {isAuthenticated ? (
                   <div className="flex space-x-2 pt-2">
