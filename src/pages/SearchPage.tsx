@@ -78,18 +78,19 @@ export function SearchPage() {
               transition={{ duration: 0.6 }}
               className="text-3xl md:text-4xl font-bold text-gray-900 mb-4"
             >
-              {query ? `Search Results` : 'Popular Forms'}
+              {query ? `Search Results` : 'Forms'}
             </motion.h1>
-            {query && (
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-                className="text-xl text-gray-600"
-              >
-                Results for "{query}"
-              </motion.p>
-            )}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="text-xl text-gray-600"
+            >
+              {query 
+                ? `Results for "${query}"` 
+                : 'Discover and download official forms from government agencies, educational institutions, and legal resources. Browse our comprehensive collection or use the search above to find specific documents.'
+              }
+            </motion.p>
           </div>
           
           <SearchBar 
