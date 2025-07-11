@@ -53,34 +53,6 @@ export function SignUpPage() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleGoogleSignup = async () => {
-    if (isSubmitting) return;
-    setIsSubmitting(true);
-    try {
-      await loginWithGoogle();
-      success('Account created!', 'Welcome to Forms Discovery. You can now access all features.');
-      navigate('/');
-    } catch (err) {
-      error('Google signup failed', 'Please try again.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const handleFacebookSignup = async () => {
-    if (isSubmitting) return;
-    setIsSubmitting(true);
-    try {
-      await loginWithFacebook();
-      success('Account created!', 'Welcome to Forms Discovery. You can now access all features.');
-      navigate('/');
-    } catch (err) {
-      error('Facebook signup failed', 'Please try again.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   return (
     <div className="min-h-screen bg-gray-50 flex">
       {/* Left Side - Form */}
@@ -121,6 +93,7 @@ export function SignUpPage() {
             <div className="space-y-3">
               <button
                 type="button"
+                onClick={handleGoogleSignup}
                 className="w-full flex items-center justify-center px-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-700 hover:bg-gray-50 transition-all duration-200 font-medium"
                 disabled={isSubmitting}
               >
@@ -135,6 +108,7 @@ export function SignUpPage() {
               
               <button
                 type="button"
+                onClick={handleFacebookSignup}
                 className="w-full flex items-center justify-center px-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-700 hover:bg-gray-50 transition-all duration-200 font-medium"
                 disabled={isSubmitting}
               >
