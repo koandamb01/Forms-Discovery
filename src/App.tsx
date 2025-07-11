@@ -15,6 +15,9 @@ import { ContactPage } from './pages/ContactPage';
 import { PremiumPage } from './pages/PremiumPage';
 import { AdminPage } from './pages/AdminPage';
 import { ProfilePage } from './pages/ProfilePage';
+import { SignInPage } from './pages/SignInPage';
+import { SignUpPage } from './pages/SignUpPage';
+import { ResetPasswordPage } from './pages/ResetPasswordPage';
 import { AIAssistant } from './components/features/AIAssistant';
 import { ToastContainer } from './components/ui/Toast';
 import { useToast } from './hooks/useToast';
@@ -46,6 +49,9 @@ function App() {
               <Route path="/premium" element={<PremiumPage />} />
               <Route path="/admin" element={<AdminPage />} />
               <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/signin" element={<SignInPage />} />
+              <Route path="/signup" element={<SignUpPage />} />
+              <Route path="/reset-password" element={<ResetPasswordPage />} />
             </Routes>
           </main>
           <Footer />

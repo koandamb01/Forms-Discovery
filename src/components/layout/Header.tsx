@@ -7,9 +7,6 @@ import { SearchBar } from '../ui/SearchBar';
 import { AdvancedSearch } from '../features/AdvancedSearch';
 import { NewsletterSignup } from '../features/NewsletterSignup';
 import { GetStartedModal } from '../features/GetStartedModal';
-import { LoginModal } from '../auth/LoginModal';
-import { SignupModal } from '../auth/SignupModal';
-import { ResetPasswordModal } from '../auth/ResetPasswordModal';
 import { Modal } from '../ui/Modal';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -19,7 +16,6 @@ export function Header() {
   const [isAdvancedSearchOpen, setIsAdvancedSearchOpen] = useState(false);
   const [isNewsletterOpen, setIsNewsletterOpen] = useState(false);
   const [isGetStartedOpen, setIsGetStartedOpen] = useState(false);
-  const [activeAuthModal, setActiveAuthModal] = useState<'login' | 'signup' | 'reset' | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
   const { isAuthenticated, userProfile, logout } = useAuth();
@@ -120,7 +116,7 @@ export function Header() {
             <Button 
               variant="outline" 
               size="sm"
-              onClick={() => setIsNewsletterOpen(true)}
+              onClick={() => navigate('/signup')}
             >
               Newsletter
             </Button>
@@ -319,20 +315,14 @@ export function Header() {
                     <Button 
                       variant="outline" 
                       className="flex-1"
-                      onClick={() => {
-                        setActiveAuthModal('login');
-                        setIsMobileMenuOpen(false);
-                      }}
+                      onClick={() => navigate('/signin')}
                     >
                       Sign In
                     </Button>
                     <Button 
                       variant="primary" 
                       className="flex-1"
-                      onClick={() => {
-                        setActiveAuthModal('signup');
-                        setIsMobileMenuOpen(false);
-                      }}
+                      onClick={() => navigate('/signup')}
                     >
                       Sign Up
                     </Button>
@@ -363,26 +353,6 @@ export function Header() {
       <GetStartedModal 
         isOpen={isGetStartedOpen} 
         onClose={() => setIsGetStartedOpen(false)} 
-      />
-      
-      {/* Auth Modals */}
-      <LoginModal
-        isOpen={activeAuthModal === 'login'}
-        onClose={() => setActiveAuthModal(null)}
-        onSwitchToSignup={() => setActiveAuthModal('signup')}
-        onSwitchToReset={() => setActiveAuthModal('reset')}
-      />
-      
-      <SignupModal
-        isOpen={activeAuthModal === 'signup'}
-        onClose={() => setActiveAuthModal(null)}
-        onSwitchToLogin={() => setActiveAuthModal('login')}
-      />
-      
-      <ResetPasswordModal
-        isOpen={activeAuthModal === 'reset'}
-        onClose={() => setActiveAuthModal(null)}
-        onBackToLogin={() => setActiveAuthModal('login')}
       />
     </header>
   );
