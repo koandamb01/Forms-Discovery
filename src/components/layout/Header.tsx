@@ -185,14 +185,14 @@ export function Header() {
                 <Button 
                   variant="outline" 
                   size="sm"
-                  onClick={() => setActiveAuthModal('login')}
+                  onClick={() => navigate('/signin')}
                 >
                   Sign In
                 </Button>
                 <Button 
                   variant="primary" 
                   size="sm"
-                  onClick={() => setActiveAuthModal('signup')}
+                  onClick={() => navigate('/signup')}
                 >
                   Sign Up
                 </Button>
