@@ -53,6 +53,34 @@ export function SignUpPage() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  const handleGoogleSignup = async () => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+    try {
+      await loginWithGoogle();
+      success('Account created!', 'Welcome to Forms Discovery. You can now access all features.');
+      navigate('/');
+    } catch (err) {
+      error('Google signup failed', 'Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleFacebookSignup = async () => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+    try {
+      await loginWithFacebook();
+      success('Account created!', 'Welcome to Forms Discovery. You can now access all features.');
+      navigate('/');
+    } catch (err) {
+      error('Facebook signup failed', 'Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 flex">
       {/* Left Side - Form */}

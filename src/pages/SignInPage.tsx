@@ -112,6 +112,7 @@ export function SignInPage() {
             <div className="space-y-3">
               <button
                 type="button"
+                onClick={handleGoogleLogin}
                 className="w-full flex items-center justify-center px-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-700 hover:bg-gray-50 transition-all duration-200 font-medium"
                 disabled={isSubmitting}
               >
@@ -126,6 +127,7 @@ export function SignInPage() {
               
               <button
                 type="button"
+                onClick={handleFacebookLogin}
                 className="w-full flex items-center justify-center px-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-700 hover:bg-gray-50 transition-all duration-200 font-medium"
                 disabled={isSubmitting}
               >
