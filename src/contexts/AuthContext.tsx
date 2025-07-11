@@ -12,6 +12,8 @@ interface AuthContextType {
   userProfile: User | null;
   login: (email: string, password: string) => Promise<void>;
   signup: (email: string, password: string, name: string) => Promise<void>;
+  loginWithGoogle: () => Promise<void>;
+  loginWithFacebook: () => Promise<void>;
   logout: () => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
   isLoading: boolean;
@@ -122,11 +124,61 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   };
 
+  const loginWithGoogle = async () => {
+    setIsLoading(true);
+    try {
+      // Simulate Google OAuth flow
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // Mock successful Google login
+      const user: User = {
+        id: 'user_google',
+        email: 'user@gmail.com',
+        name: 'Google User',
+        subscriptionType: 'free'
+      };
+      
+      localStorage.setItem('auth_token', 'google_token');
+      setUserProfile(user);
+      setIsAuthenticated(true);
+    } catch (error) {
+      throw new Error('Google login failed');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const loginWithFacebook = async () => {
+    setIsLoading(true);
+    try {
+      // Simulate Facebook OAuth flow
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // Mock successful Facebook login
+      const user: User = {
+        id: 'user_facebook',
+        email: 'user@facebook.com',
+        name: 'Facebook User',
+        subscriptionType: 'free'
+      };
+      
+      localStorage.setItem('auth_token', 'facebook_token');
+      setUserProfile(user);
+      setIsAuthenticated(true);
+    } catch (error) {
+      throw new Error('Facebook login failed');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const value: AuthContextType = {
     isAuthenticated,
     userProfile,
     login,
     signup,
+    loginWithGoogle,
+    loginWithFacebook,
     logout,
     resetPassword,
     isLoading
