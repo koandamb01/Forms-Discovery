@@ -85,7 +85,7 @@ export function HeroSection({ onSearch }: HeroSectionProps) {
               onSearch={onSearch}
               onAskAI={handleAskAI}
               placeholder="Search for forms... (e.g., 'green card application', 'tax return')"
-              className="shadow-xl"
+              className=""
             />
           </motion.div>
 

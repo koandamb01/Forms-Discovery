@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, Search, User, BookOpen, Home, Filter, Info, Mail, Crown, Settings, LogOut, FileText } from 'lucide-react';
+import { Menu, X, User, BookOpen, Home, Info, Mail, LogOut, FileText } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { SearchBar } from '../ui/SearchBar';
 import { AdvancedSearch } from '../features/AdvancedSearch';
@@ -26,6 +26,7 @@ export function Header() {
     { name: 'Blog', href: '/blog', icon: BookOpen },
     { name: 'About', href: '/about', icon: Info },
     { name: 'Contact', href: '/contact', icon: Mail },
+    { name: 'Forms', href: '/search', icon: FileText },
   ];
 
   const handleSearch = (query: string) => {
@@ -97,50 +98,8 @@ export function Header() {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-4">
-            <Link
-              to="/search"
-              className="flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 text-gray-700 hover:text-primary-600 hover:bg-gray-50"
-            >
-              <FileText size={18} />
-              <span className="font-medium">Forms</span>
-            </Link>
-            
-            <button
-              onClick={() => setIsAdvancedSearchOpen(true)}
-              className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-all duration-200"
-              title="Advanced Search"
-            >
-              <Filter size={20} />
-            </button>
-
-            <Button 
-              variant="outline" 
-              size="sm"
-              onClick={() => navigate('/signup')}
-            >
-              Newsletter
-            </Button>
-
-            {!isAuthenticated && (
-              <Link to="/premium">
-                <Button variant="outline" size="sm">
-                  <Crown size={16} className="mr-2" />
-                  Premium
-                </Button>
-              </Link>
-            )}
-
             {isAuthenticated ? (
               <div className="flex items-center space-x-4">
-                {!userProfile?.subscriptionType || userProfile.subscriptionType === 'free' ? (
-                  <Link to="/premium">
-                    <Button variant="outline" size="sm">
-                      <Crown size={16} className="mr-2" />
-                      Upgrade
-                    </Button>
-                  </Link>
-                ) : null}
-                
                 <div className="relative group">
                   <button className="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100 transition-colors">
                     <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
@@ -150,7 +109,6 @@ export function Header() {
                       {userProfile?.name || 'User'}
                     </span>
                   </button>
-                  
                   {/* Dropdown Menu */}
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                     <div className="py-2">
@@ -160,13 +118,6 @@ export function Header() {
                       >
                         <User size={16} className="mr-3" />
                         Profile
-                      </button>
-                      <button
-                        onClick={() => navigate('/admin')}
-                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
-                      >
-                        <Settings size={16} className="mr-3" />
-                        Admin
                       </button>
                       <hr className="my-1" />
                       <button
@@ -266,26 +217,8 @@ export function Header() {
               })}
               <div className="pt-4 mt-4 border-t border-gray-100 space-y-2">
                 <SearchBar onSearch={handleSearch} placeholder="Search forms..." />
-                
-                <Link
-                  to="/search"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="flex items-center space-x-3 px-3 py-3 rounded-lg transition-all duration-200 text-gray-700 hover:text-primary-600 hover:bg-gray-50"
-                >
-                  <FileText size={20} />
-                  <span className="font-medium">Forms</span>
-                </Link>
-                
                 {isAuthenticated ? (
                   <div className="flex space-x-2 pt-2">
-                    {(!userProfile?.subscriptionType || userProfile.subscriptionType === 'free') && (
-                      <Link to="/premium" className="flex-1">
-                        <Button variant="outline" className="w-full">
-                          <Crown size={16} className="mr-2" />
-                          Upgrade
-                        </Button>
-                      </Link>
-                    )}
                     <Button 
                       variant="outline" 
                       className="flex-1"
@@ -306,12 +239,6 @@ export function Header() {
                   </div>
                 ) : (
                   <div className="flex space-x-2 pt-2">
-                    <Link to="/premium" className="flex-1">
-                      <Button variant="outline" className="w-full">
-                        <Crown size={16} className="mr-2" />
-                        Premium
-                      </Button>
-                    </Link>
                     <Button 
                       variant="outline" 
                       className="flex-1"

@@ -53,6 +53,9 @@ export function SignUpPage() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  const handleGoogleSignup = () => {}
+  const handleFacebookSignup = () => {}
+
   return (
     <div className="min-h-screen bg-gray-50 flex">
       {/* Left Side - Form */}

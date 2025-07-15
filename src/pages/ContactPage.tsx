@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Send, MessageCircle, HelpCircle } from 'lucide-react';
+import { Mail, Send, MessageCircle, HelpCircle } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import { useToast } from '../hooks/useToast';
 
@@ -145,7 +145,7 @@ export function ContactPage() {
               })}
 
               {/* Office Info */}
-              <motion.div
+              {/* <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: 0.6 }}
@@ -166,7 +166,7 @@ export function ContactPage() {
                     </p>
                   </div>
                 </div>
-              </motion.div>
+              </motion.div> */}
             </motion.div>
           </div>
 
