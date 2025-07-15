@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { Search, Download, CheckCircle } from 'lucide-react';
 
@@ -93,7 +92,7 @@ export function HowItWorksSection() {
                   className="relative text-center"
                 >
                   {/* Step Number */}
-                  <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 w-10 h-10 bg-white border-2 border-gray-300 rounded-full flex items-center justify-center text-sm font-bold text-gray-700 shadow-sm z-10">
+                  <div className="absolute -top-9 left-1/2 transform -translate-x-1/2 w-10 h-10 bg-white border-2 border-gray-300 rounded-full flex items-center justify-center text-sm font-bold text-gray-700 shadow-sm z-10">
                     {index + 1}
                   </div>
 

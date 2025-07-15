@@ -1,6 +1,5 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
-import { Mail, Twitter, Linkedin, Github, ArrowRight } from 'lucide-react';
+import { Twitter, Linkedin, Github, ArrowRight, Facebook } from 'lucide-react';
 import { Button } from '../ui/Button';
 
 export function Footer() {
@@ -10,8 +9,7 @@ export function Footer() {
     'Product': [
       { name: 'Categories', href: '/categories' },
       { name: 'Popular Forms', href: '/popular' },
-      { name: 'Search', href: '/search' },
-      { name: 'API', href: '/api' }
+      { name: 'Search', href: '/search' }
     ],
     'Company': [
       { name: 'About Us', href: '/about' },
@@ -36,7 +34,8 @@ export function Footer() {
   const socialLinks = [
     { name: 'Twitter', icon: Twitter, href: 'https://twitter.com' },
     { name: 'LinkedIn', icon: Linkedin, href: 'https://linkedin.com' },
-    { name: 'GitHub', icon: Github, href: 'https://github.com' }
+    { name: 'GitHub', icon: Github, href: 'https://github.com' },
+    { name: 'Facebook', icon: Facebook, href: 'https://facebook.com' },
   ];
 
   return (
